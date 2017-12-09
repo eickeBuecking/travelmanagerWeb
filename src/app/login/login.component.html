@@ -1,0 +1,46 @@
+<div class="container">
+  <div [hidden]="submitted">
+
+  <p>
+    Welcome to the Travelmanager. Please login.
+  </p>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Username:</label>
+        <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" #name="ngModel" required>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+          <div *ngIf="name.errors.required">
+            Name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" [(ngModel)]="user.password" name="password" minlength="4" #password="ngModel" required>
+        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+          <div *ngIf="password.errors.required">
+            Password is required
+          </div>
+          <div *ngIf="password.errors.minlength">
+            Must be at least four characters long.
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success" [disabled]="!loginForm.form.valid">Login</button>
+
+    </form>
+  </div>
+  <div [hidden]="!submitted || error">
+    <p>
+      Wait for being logged in...
+    </p>
+  </div>
+  <div *ngIf="error">
+    <div class="alert alert-danger">
+      <strong>Error:</strong>{{error.message}}
+    </div>
+    <button class="btn btn-primary" type="button" (click) ="tryAgain()">Try Again!</button>
+  </div>
+</div>
