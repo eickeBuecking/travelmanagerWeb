@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login.service';
 import { AppRoutingModule } from './/app-routing.module';
+import { AuthService } from './auth.service';
 import { TravelListComponent } from './travel-list/travel-list.component';
+import { HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,9 +19,10 @@ import { TravelListComponent } from './travel-list/travel-list.component';
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [LoginService],
+  providers: [LoginService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

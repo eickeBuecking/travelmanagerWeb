@@ -1,26 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
-import { HttpParams } from '@angular/common/http';
 import { User } from './user';
 import { Observable } from 'rxjs/Observable';
+
+const basic_auth_header = "Basic ZWlja2U6Z2VoZWlt";
 
 @Injectable()
 export class AuthService {
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
   private user: User;
-  login(username, password): void {
+  login(username, password): User {
 
-    this.http.post('https://localhost:8081/oauth/token', undefined, {
-      params: new HttpParams().set('grant_type','password').set('user', username).set('password',password)
+    let res = this.http.post('http://localhost:8081/oauth/token', undefined, {
+      params: new HttpParams().set('grant_type','password').set('user', username).set('password',password),
+      headers: new HttpHeaders().set('Authorization', basic_auth_header )
     })
-      .map(res => res.json())
+
       .subscribe(
         // We're assuming the response will be an object
         // with the JWT on an id_token key
-        data => {localStorage.setItem('access_token', data.access_token)},
+        data => {localStorage.setItem('access_token', data['access_token'])},
         error => {console.log(error), Observable.throw(error)}
       );
+      console.log(res);
+      let user: User = new User(0, "Klaus", "Meier");
+      return user;
   }
 }

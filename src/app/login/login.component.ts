@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() : void{
     this.submitted = true;
-    this.authService.login(this.user.name, this.user.password).subscribe(user => this.user = user, err => this.handleError(err));
+    this.user = this.authService.login(this.user.name, this.user.password);
     this.router.navigate(['/travels']);
   }
 
