@@ -5,9 +5,13 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, retry } from 'rxjs/operators';
+import { User } from './models/user';
 
 const basic_auth_header = "Basic ZWlja2U6Z2VoZWlt";
-
+interface LoginResponse {
+  access_token: string;
+  expires_in: number;
+}
 @Injectable()
 export class AuthenticationService {
     public token: string;
@@ -18,26 +22,26 @@ export class AuthenticationService {
         this.token = currentUser && currentUser.token;
     }
 
-    login(username: string, password: string): Observable<boolean> {
-         return this.http.post('http://localhost:8081/auth/oauth/token', undefined, {
+    login(username: string, password: string): Observable<User> {
+         return this.http.post<LoginResponse>('http://localhost:8081/auth/oauth/token', undefined, {
           params: new HttpParams().set('grant_type','password').set('username', username).set('password',password),
           headers: new HttpHeaders().set('Authorization', basic_auth_header )
-        }).map((response: Response) => {
+        }).map((response: LoginResponse) => {
                 // login successful if there's a jwt token in the response
-                let token : string;
-                response.json().then((token) => this.token = token );
-                if (token) {
-                    // set token property
-                    this.token = token;
 
+                if (response.access_token) {
+                    // set token property
+                    this.token = response.access_token;
+                    let user = new User();
+                    user.username = "Eicke";
                     // store username and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+                    localStorage.setItem('currentUser', JSON.stringify(user));
 
                     // return true to indicate successful login
-                    return true;
+                    return user;
                 } else {
-                    // return false to indicate failed login
-                    return false;
+                  throw new ErrorObservable(
+                    'Token was not exposed as suspected.');
                 }
             }).pipe(
               catchError(this.handleError)
@@ -68,5 +72,6 @@ export class AuthenticationService {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('access_token');
     }
 }

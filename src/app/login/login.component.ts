@@ -24,18 +24,14 @@ export class LoginComponent implements OnInit {
 
 
   onSubmit() : void {
-        this.submitted = true;
-        this.authService.login(this.user.name, this.user.password)
-            .subscribe(result => {
-                if (result === true) {
-                    // login successful
-                    this.router.navigate(['/travels']);
-                } else {
-                    // login failed
-                    this.handleError('Username or password is incorrect');
-                    this.submitted = false;
-                }
-            });
+    let user : User;
+    this.submitted = true;
+    this.authService.login(this.user.name, this.user.password)
+        .subscribe(user => {
+                this.router.navigate(['/travels']);
+            },
+            error => { this.handleError(error) }
+        )
     }
 
   handleError(error:string) :void {
