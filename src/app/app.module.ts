@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from './login.service';
 import { AppRoutingModule } from './/app-routing.module';
 import { AuthService } from './auth.service';
+import { AuthenticationService } from './authentication.service';
 import { TravelListComponent } from './travel-list/travel-list.component';
 import { HttpClientModule} from '@angular/common/http';
 
@@ -22,7 +23,7 @@ import { HttpClientModule} from '@angular/common/http';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [LoginService, AuthService],
+  providers: [LoginService, AuthService, AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
