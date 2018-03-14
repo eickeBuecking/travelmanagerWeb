@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { LoginService } from './login.service';
+
 import { AppRoutingModule } from './app-routing.module';
-import { AuthService } from './auth.service';
+
 import { AuthenticationService } from './authentication.service';
+import { TravelsService } from './travels.service';
 import { TravelListComponent } from './travel-list/travel-list.component';
 import { HttpClientModule} from '@angular/common/http';
 import { AuthGuard } from './guards/auth.guard';
@@ -24,7 +25,7 @@ import { AuthGuard } from './guards/auth.guard';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [LoginService, AuthService, AuthenticationService, AuthGuard],
+  providers: [AuthenticationService, AuthGuard, TravelsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,7 +7,7 @@
     <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Username:</label>
-        <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" #name="ngModel" required>
+        <input type="text" class="form-control" id="name" [(ngModel)]="user.username" name="username" #name="ngModel" required>
         <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
           <div *ngIf="name.errors.required">
             Name is required

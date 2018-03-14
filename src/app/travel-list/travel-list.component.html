@@ -1,5 +1,5 @@
 <div class="container">
-  <p>
-    Here the list of travels will be displayed.
-  </p>
+    <p *ngFor="let travel of travels">
+      {{travel.id}} - {{travel.description}}
+    </p>
 </div>
